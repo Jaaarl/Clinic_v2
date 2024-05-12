@@ -1,5 +1,11 @@
 export default function queue() {
     return (
-        <div>queue</div>
+        <>
+            <div>queue</div>
+
+
+
+
+        </>
     )
 }
