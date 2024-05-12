@@ -26,27 +26,28 @@ export default function newPatient() {
         conditions: [],
         surgeries: []
     });
-    const addAllergy = (newAllergy) => {
-        setMedicalHistory(prevState => ({
-            ...prevState,
-            allergies: [...prevState.allergies, newAllergy]
-        }));
-    };
-
-    const removeCondition = (conditionToRemove) => {
-        setMedicalHistory(prevState => ({
-            ...prevState,
-            conditions: prevState.conditions.filter(condition => condition !== conditionToRemove)
-        }));
-    };
-
-    const addSurgery = (newSurgery) => {
-        setMedicalHistory(prevState => ({
-            ...prevState,
-            surgeries: [...prevState.surgeries, newSurgery]
-        }));
-    };
-
+    
+    const handleInputChange = (index, category, value) => {
+        const newMedicalHistory = { ...medicalHistory };
+        newMedicalHistory[category][index] = value;
+        setMedicalHistory(newMedicalHistory);
+      };
+    
+      // Handle adding new input fields
+      const handleAddField = (category) => {
+        const newMedicalHistory = { ...medicalHistory };
+        newMedicalHistory[category].push('');
+        setMedicalHistory(newMedicalHistory);
+      };
+    
+      // Handle removing input fields
+      const handleRemoveField = (index, category) => {
+        const newMedicalHistory = { ...medicalHistory };
+        newMedicalHistory[category].splice(index, 1);
+        setMedicalHistory(newMedicalHistory);
+      };
+    
+    
 
     const handleChange = (e, field, subfield = null) => {
         const value = e.target.value;
@@ -61,7 +62,12 @@ export default function newPatient() {
         setBirthday(prevState => ({ ...prevState, [field]: value }));
     };
 
-
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+        }
+      };
+      
 
 
     const router = useRouter()
@@ -234,7 +240,62 @@ export default function newPatient() {
                             className='border border-slate-500 px-3 py-2 rounded-md'
                         />
                     </div>
+<div>
+<div>
+        <h2 className='block text-gray-700 font-bold mb-2'>Allergies</h2>
+        {medicalHistory.allergies.map((allergy, index) => (
+          <div key={index}>
+            <input
+              type="text"
+              value={allergy}
+              onChange={(e) => handleInputChange(index, 'allergies', e.target.value)}
+              onKeyDown={handleKeyPress}
 
+            />
+            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm"    type="button" onClick={() => handleRemoveField(index, 'allergies')}>Remove</button>
+          </div>
+        ))}
+        <button
+  type="button"
+  onClick={() => handleAddField('allergies')}
+  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm"
+
+>
+  Add Allergy
+</button>
+      </div>
+      <div>
+        <h2 className='block text-gray-700 font-bold mb-2'>Conditions</h2>
+        {medicalHistory.conditions.map((condition, index) => (
+          <div key={index}>
+            <input
+              type="text"
+              value={condition}
+              onChange={(e) => handleInputChange(index, 'conditions', e.target.value)}
+              onKeyDown={handleKeyPress}
+            />
+            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleRemoveField(index, 'conditions')}>Remove</button>
+          </div>
+        ))}
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleAddField('conditions')}>Add Condition</button>
+      </div>
+      <div>
+        <h2 className='block text-gray-700 font-bold mb-2'> Surgeries</h2>
+        {medicalHistory.surgeries.map((surgery, index) => (
+          <div key={index}>
+            <input
+              type="text"
+              value={surgery}
+              onChange={(e) => handleInputChange(index, 'surgeries', e.target.value)}
+              onKeyDown={handleKeyPress}
+            />
+            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleRemoveField(index, 'surgeries')}>Remove</button>
+          </div>
+        ))}
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleAddField('surgeries')}>Add Surgery</button>
+      </div>
+
+</div>
                     <button type='submit' className='button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>Add Patient</button>
                 </form>
             </div>
