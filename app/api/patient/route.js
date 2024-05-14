@@ -16,9 +16,9 @@ import { NextResponse } from "next/server";
 
 export async function POST(request) {
     try {
-        const { name, gender, contact } = await request.json();
+        const { name, gender, contact, medical_history, medications, visit_history } = await request.json();
         await connectDB();
-        await Patient.create({ name, gender, contact });
+        await Patient.create({ name, gender, contact, medical_history, medications, visit_history });
         return NextResponse.json({ message: "Patient Created" }, { status: 201 });
     } catch (error) {
         console.error("Error creating patient:", error);

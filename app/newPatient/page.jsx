@@ -21,33 +21,40 @@ export default function newPatient() {
             zip: ''
         }
     });
-    const [medicalHistory, setMedicalHistory] = useState({
+    const [medical_history, setMedicalHistory] = useState({
         allergies: [],
         conditions: [],
         surgeries: []
     });
-    
+    const [medications, setMedications] = useState([
+        {
+            name: '',
+            dosage: '',
+            frequency: ''
+        }
+    ]);
+
     const handleInputChange = (index, category, value) => {
-        const newMedicalHistory = { ...medicalHistory };
+        const newMedicalHistory = { ...medical_history };
         newMedicalHistory[category][index] = value;
         setMedicalHistory(newMedicalHistory);
-      };
-    
-      // Handle adding new input fields
-      const handleAddField = (category) => {
-        const newMedicalHistory = { ...medicalHistory };
+    };
+
+    // Handle adding new input fields
+    const handleAddField = (category) => {
+        const newMedicalHistory = { ...medical_history };
         newMedicalHistory[category].push('');
         setMedicalHistory(newMedicalHistory);
-      };
-    
-      // Handle removing input fields
-      const handleRemoveField = (index, category) => {
-        const newMedicalHistory = { ...medicalHistory };
+    };
+
+    // Handle removing input fields
+    const handleRemoveField = (index, category) => {
+        const newMedicalHistory = { ...medical_history };
         newMedicalHistory[category].splice(index, 1);
         setMedicalHistory(newMedicalHistory);
-      };
-    
-    
+    };
+
+
 
     const handleChange = (e, field, subfield = null) => {
         const value = e.target.value;
@@ -64,10 +71,27 @@ export default function newPatient() {
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-          e.preventDefault();
+            e.preventDefault();
         }
-      };
-      
+    };
+
+    const handleMedicationChange = (e, index) => {
+        const { name, value } = e.target;
+        const newMedications = [...medications];
+        newMedications[index][name] = value;
+        setMedications(newMedications);
+    };
+
+    const handleAddMedication = () => {
+        setMedications([...medications, { name: '', dosage: '', frequency: '' }]);
+    };
+
+    const handleRemoveMedication = (index) => {
+        const newMedications = medications.filter((_, i) => i !== index);
+        setMedications(newMedications);
+    };
+
+
 
 
     const router = useRouter()
@@ -79,12 +103,13 @@ export default function newPatient() {
             return;
         }
         try {
+            console.log(medical_history);
             const res = await fetch('http://localhost:3000/api/patient', {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"
                 },
-                body: JSON.stringify({ name, gender, contact })
+                body: JSON.stringify({ name, gender, contact, medical_history, medications })
             });
             if (res.ok) {
                 router.push('/');
@@ -153,17 +178,7 @@ export default function newPatient() {
                             />
                         </div>
                         <div>
-                            {/* <label htmlFor="gender" className="block text-gray-700 font-bold mb-2">
-                                Gender
-                            </label>
-                            <select onChange={(e) => setGender(e.target.value)}
-                                className="border border-slate-500 px-3 py-2 rounded-md w-[28vh] mb-4"
-                            >
-                                <option value="">Select Gender</option>
 
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select> */}
                             <input
                                 type="radio"
                                 id="male"
@@ -240,62 +255,96 @@ export default function newPatient() {
                             className='border border-slate-500 px-3 py-2 rounded-md'
                         />
                     </div>
-<div>
-<div>
-        <h2 className='block text-gray-700 font-bold mb-2'>Allergies</h2>
-        {medicalHistory.allergies.map((allergy, index) => (
-          <div key={index}>
-            <input
-              type="text"
-              value={allergy}
-              onChange={(e) => handleInputChange(index, 'allergies', e.target.value)}
-              onKeyDown={handleKeyPress}
+                    <div>
+                        <div>
+                            <h2 className='block text-gray-700 font-bold mb-2'>Allergies</h2>
+                            {medical_history.allergies.map((allergy, index) => (
+                                <div key={index}>
+                                    <input
+                                        className=' mb-2 border border-slate-500 px-2 py-1 rounded-md mr-2'
+                                        type="text"
+                                        value={allergy}
+                                        onChange={(e) => handleInputChange(index, 'allergies', e.target.value)}
+                                        onKeyDown={handleKeyPress}
 
-            />
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm"    type="button" onClick={() => handleRemoveField(index, 'allergies')}>Remove</button>
-          </div>
-        ))}
-        <button
-  type="button"
-  onClick={() => handleAddField('allergies')}
-  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm"
+                                    />
+                                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleRemoveField(index, 'allergies')}>Remove</button>
+                                </div>
+                            ))}
+                            <button
+                                type="button"
+                                onClick={() => handleAddField('allergies')}
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm"
 
->
-  Add Allergy
-</button>
-      </div>
-      <div>
-        <h2 className='block text-gray-700 font-bold mb-2'>Conditions</h2>
-        {medicalHistory.conditions.map((condition, index) => (
-          <div key={index}>
-            <input
-              type="text"
-              value={condition}
-              onChange={(e) => handleInputChange(index, 'conditions', e.target.value)}
-              onKeyDown={handleKeyPress}
-            />
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleRemoveField(index, 'conditions')}>Remove</button>
-          </div>
-        ))}
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleAddField('conditions')}>Add Condition</button>
-      </div>
-      <div>
-        <h2 className='block text-gray-700 font-bold mb-2'> Surgeries</h2>
-        {medicalHistory.surgeries.map((surgery, index) => (
-          <div key={index}>
-            <input
-              type="text"
-              value={surgery}
-              onChange={(e) => handleInputChange(index, 'surgeries', e.target.value)}
-              onKeyDown={handleKeyPress}
-            />
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleRemoveField(index, 'surgeries')}>Remove</button>
-          </div>
-        ))}
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleAddField('surgeries')}>Add Surgery</button>
-      </div>
+                            >
+                                Add Allergy
+                            </button>
+                        </div>
+                        <div>
+                            <h2 className='block text-gray-700 font-bold mb-2'>Conditions</h2>
+                            {medical_history.conditions.map((condition, index) => (
+                                <div key={index}>
+                                    <input
+                                        className='mb-2 border border-slate-500 px-2 py-1 rounded-md mr-2'
+                                        type="text"
+                                        value={condition}
+                                        onChange={(e) => handleInputChange(index, 'conditions', e.target.value)}
+                                        onKeyDown={handleKeyPress}
+                                    />
+                                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleRemoveField(index, 'conditions')}>Remove</button>
+                                </div>
+                            ))}
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleAddField('conditions')}>Add Condition</button>
+                        </div>
+                        <div className='mb-2'>
+                            <h2 className='block text-gray-700 font-bold mb-2'> Surgeries</h2>
+                            {medical_history.surgeries.map((surgery, index) => (
+                                <div key={index}>
+                                    <input
 
-</div>
+                                        className='border border-slate-500 px-2 py-1 rounded-md mr-2 mb-2 '
+                                        type="text"
+                                        value={surgery}
+                                        onChange={(e) => handleInputChange(index, 'surgeries', e.target.value)}
+                                        onKeyDown={handleKeyPress}
+                                    />
+                                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleRemoveField(index, 'surgeries')}>Remove</button>
+                                </div>
+                            ))}
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleAddField('surgeries')}>Add Surgery</button>
+                        </div>
+                        {medications.map((medication, index) => (
+                            <div key={index} className='flex gap-2'>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Medication Name"
+                                    value={medication.name}
+                                    onChange={(e) => handleMedicationChange(e, index)}
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    name="dosage"
+                                    placeholder="Dosage"
+                                    value={medication.dosage}
+                                    onChange={(e) => handleMedicationChange(e, index)}
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    name="frequency"
+                                    placeholder="Frequency"
+                                    value={medication.frequency}
+                                    onChange={(e) => handleMedicationChange(e, index)}
+                                    required
+                                />
+                                <button type="button" className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" onClick={() => handleRemoveMedication(index)}>Remove</button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={handleAddMedication}>Add Medication</button>
+
+                    </div>
                     <button type='submit' className='button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>Add Patient</button>
                 </form>
             </div>

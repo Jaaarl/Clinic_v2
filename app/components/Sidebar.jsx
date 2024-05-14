@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function Sidebar() {
     return (
         <>
-            <div className="w-[310px] bg-gray-800 h-screen flex flex-col">
+            <div className="w-[310px] bg-gray-800 h-100vh flex flex-col">
                 <div className="p-4 text-white">
                     <div className="relative">
                         <input
