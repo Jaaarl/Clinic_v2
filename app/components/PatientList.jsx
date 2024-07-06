@@ -75,7 +75,7 @@ export default async function PatientList() {
                         ))}
 
                     </td>
-                    <td className="px-4 py-2 border border-gray-300 text-center"><div className="flex justify-center items-center gap-4"><RemoveBtn />
+                    <td className="px-4 py-2 border border-gray-300 text-center"><div className="flex justify-center items-center gap-4"><RemoveBtn id={p._id} />
                         <Link href={`/editPatient/${p._id}`}>
                             <FaEdit size={24} />
                         </Link>

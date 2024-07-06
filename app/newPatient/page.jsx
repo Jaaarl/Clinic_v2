@@ -112,7 +112,8 @@ export default function newPatient() {
                 body: JSON.stringify({ name, gender, contact, medical_history, medications })
             });
             if (res.ok) {
-                router.push('/');
+                router.push('/patient');
+                router.refresh();
                 console.log('ok');
             }
             else {
