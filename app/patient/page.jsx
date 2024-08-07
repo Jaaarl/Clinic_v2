@@ -11,7 +11,7 @@ export default function patient() {
                             <tr>
                                 <th className="px-4 py-2 bg-gray-100 border border-gray-300">Profile</th>
                                 <th className="px-1 py-2 bg-gray-100 border border-gray-300">Medical History</th>
-                                <th className="px-4 py-2 bg-gray-100 border border-gray-300">Medication</th>
+                                {/* <th className="px-4 py-2 bg-gray-100 border border-gray-300">Medication</th> */}
                                 <th className="px-4 py-2 bg-gray-100 border border-gray-300">Visit History</th>
                                 <th className="px-4 py-2 bg-gray-100 border border-gray-300">Action</th>
                             </tr>

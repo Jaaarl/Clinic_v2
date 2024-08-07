@@ -1,15 +1,3 @@
-// import connectDB from "@/libs/mongodb";
-// import Patient from "@/models/patient";
-// import { NextResponse } from "next/server";
-
-// export async function POST(request) {
-//     const { name, gender } = await request.json();
-//     await connectDB();
-//     await Patient.create({ name, gender });
-//     return NextResponse.json({ message: "Patient Created" }, { status: 201 })
-// }
-
-
 import connectDB from "@/libs/mongodb";
 import Patient from "@/models/patient";
 import { NextResponse } from "next/server";
@@ -31,6 +19,14 @@ export async function GET() {
     const patients = await Patient.find();
     return NextResponse.json({ patients });
 }
+
+// export async function GET() {
+//     await connectDB();
+//     const patients = await Patient.find({
+//         name: { $regex: 'john', $options: 'i' }
+//     });
+//     return NextResponse.json({ patients });
+// }
 
 export async function DELETE(request) {
     const id = request.nextUrl.searchParams.get("id")

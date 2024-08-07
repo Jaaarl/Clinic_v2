@@ -21,13 +21,13 @@ const getPatientById = async (id) => {
 
 export default async function editPatient({ params }) {
     const { id } = params;
-    console.log(id)
+    // console.log(id)
     const { patient } = await getPatientById(id);
-    console.log(patient);
-    const { name, gender, contact } = patient;
+    // console.log(patient);
+    const { name, gender, contact, medical_history, medications } = patient;
     return (
         <>
-            <EditPatientForm id={id} newName={name} newGender={gender} newContact={contact} />
+            <EditPatientForm id={id} name1={name} gender1={gender} contact1={contact} medical_history1={medical_history} medication1={medications} />
         </>
     )
 }

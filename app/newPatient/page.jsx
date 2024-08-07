@@ -103,7 +103,7 @@ export default function newPatient() {
             return;
         }
         try {
-            console.log(medical_history);
+            // console.log(medical_history);
             const res = await fetch('http://localhost:3000/api/patient', {
                 method: "POST",
                 headers: {
@@ -314,40 +314,8 @@ export default function newPatient() {
                             ))}
                             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" type="button" onClick={() => handleAddField('surgeries')}>Add Surgery</button>
                         </div>
-                        {medications.map((medication, index) => (
-                            <div key={index} className='flex gap-2 align-top items-baseline'>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    placeholder="Medication Name"
-                                    value={medication.name}
-                                    onChange={(e) => handleMedicationChange(e, index)}
-                                    required
-                                    className='mb-2 border border-slate-500 px-2 py-1 rounded-md mr-2'
-                                />
-                                <input
-                                    type="text"
-                                    name="dosage"
-                                    placeholder="Dosage"
-                                    value={medication.dosage}
-                                    onChange={(e) => handleMedicationChange(e, index)}
-                                    required
-                                    className='mb-2 border border-slate-500 px-2 py-1 rounded-md mr-2'
-                                />
-                                <input
-                                    type="text"
-                                    name="frequency"
-                                    placeholder="Frequency"
-                                    value={medication.frequency}
-                                    onChange={(e) => handleMedicationChange(e, index)}
-                                    required
-                                    className='mb-2 border border-slate-500 px-2 py-1 rounded-md mr-2'
-                                />
-                                <button type="button" className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm" onClick={() => handleRemoveMedication(index)}>Remove</button>
-                            </div>
 
-                        ))}
-                        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm mb-2' type="button" onClick={handleAddMedication}>Add Medication</button>
+                        {/* <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm focus:outline-none focus:shadow-outline text-sm mb-2' type="button" onClick={handleAddMedication}>Add Medication</button> */}
 
                     </div>
                     <button type='submit' className='button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>Add Patient</button>

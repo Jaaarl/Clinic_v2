@@ -58,15 +58,6 @@ export default async function PatientList() {
 
                     </td>
                     <td className="px-4 py-2 border border-gray-300 text-left">
-                        {/* {p.medications.name.join(", ")} */}
-                        {p.medications.map((medication, index) => (
-                            <span key={index}>
-                                {medication.name}
-                                {index !== p.medications.length - 1 ? ", " : ""}
-                            </span>
-                        ))}
-                    </td>
-                    <td className="px-4 py-2 border border-gray-300 text-left">
                         {p.visit_history.slice(-7).reverse().map((visit, index) => (
                             <div key={index}>
                                 {visit.visit_date}
